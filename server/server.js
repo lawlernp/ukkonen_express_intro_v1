@@ -1,5 +1,8 @@
 // Require express - gives us a function
 const express = require('express');
+// require body parser
+const bodyParser = require('body-parser')
+
 
 // Create an instance of express by calling the function 
 // returned above - gives us an object
@@ -10,6 +13,8 @@ const quotesData = require ('./modules/quotes.js');
 
 // express static file serving - public is the folder name
 app.use(express.static('server/public'));
+
+app.use(bodyParser.urlencoded({extended: true}));
 
 
 let index = 0;
@@ -27,7 +32,11 @@ app.get('/randomQuote', (req, res) => {
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
-
+app.post('/quotes', (req, res) => {
+    console.log('hello from post', req.body);
+    quotesData.push(req.body);
+    res.sendStatus(200)
+});
 app.listen(port, () => {
     console.log("Up and running on port: ", port);
 });
